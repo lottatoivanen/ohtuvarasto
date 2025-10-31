@@ -8,7 +8,7 @@ class TestVarasto(unittest.TestCase):
 
     def test_konstruktori_luo_tyhjan_varaston(self):
         # https://docs.python.org/3/library/unittest.html#unittest.TestCase.assertAlmostEqual
-        self.assertAlmostEqual(self.varasto.saldo, 0)
+        self.assertAlmostEqual(self.varasto.saldo, 3)
     
     def test_konstruktori_asettaa_saldon_oikein(self):
         self.varasto.lisaa_varastoon(3)
