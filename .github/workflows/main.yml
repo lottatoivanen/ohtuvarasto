@@ -15,7 +15,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install Poetry
-        run: pip install poetry
+        run: fail
       - name: Install dependencies
         run: poetry install
       - name: Run tests
