@@ -75,5 +75,7 @@ def main():
 
     test_kaikki(mehua, olutta)
 
+    print("Feilataan nyt pylint testit jotta saan ton vitsin actionin nyt vielä punaiseksi niinkuin pitää hahahahahha")
+
 if __name__ == "__main__":
     main()
