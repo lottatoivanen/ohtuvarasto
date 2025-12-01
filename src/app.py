@@ -1,9 +1,12 @@
 """Flask web application for managing Ohtuvarasto warehouses."""
+import os
 from flask import Flask, render_template, request, redirect, url_for, flash
 from varasto import Varasto
 
 app = Flask(__name__)
-app.secret_key = 'dev-secret-key-change-in-production'
+app.secret_key = os.environ.get(
+    'SECRET_KEY', 'dev-secret-key-change-in-production'
+)
 
 # In-memory storage for multiple warehouses
 varastot = {}
@@ -87,9 +90,7 @@ def lisaa_varastoon(varasto_id):
     try:
         maara = float(request.form.get('maara', 0))
 
-        if not validate_amount(maara):
-            pass
-        else:
+        if validate_amount(maara):
             varastot[varasto_id]['varasto'].lisaa_varastoon(maara)
             flash(f'Lisättiin {maara} yksikköä varastoon', 'success')
     except ValueError:
@@ -107,9 +108,7 @@ def ota_varastosta(varasto_id):
     try:
         maara = float(request.form.get('maara', 0))
 
-        if not validate_amount(maara):
-            pass
-        else:
+        if validate_amount(maara):
             saatu = varastot[varasto_id]['varasto'].ota_varastosta(maara)
             flash(f'Otettiin {saatu} yksikköä varastosta', 'success')
     except ValueError:
@@ -149,4 +148,6 @@ def poista_varasto(varasto_id):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # Only use debug mode in development, controlled by environment variable
+    debug_mode = os.environ.get('FLASK_DEBUG', 'False').lower() == 'true'
+    app.run(debug=debug_mode)
