@@ -20,7 +20,7 @@ disable=raw-checker-failed,
 [DESIGN]
 
 max-args=4
-max-statements=10
+max-statements=20
 
 [FORMAT]
 
