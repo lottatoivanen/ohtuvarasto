@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Varastot - Ohtuvarasto{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Varastot</h1>
+
+<div class="row">
+    <div class="col-md-8">
+        <h2>Kaikki varastot</h2>
+        {% if varastot %}
+            <div class="list-group">
+                {% for id, data in varastot.items() %}
+                    <a href="{{ url_for('show_varasto', varasto_id=id) }}" class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">{{ data.nimi }}</h5>
+                            <small>Saldo: {{ "%.2f"|format(data.varasto.saldo) }}</small>
+                        </div>
+                        <p class="mb-1">
+                            Tilavuus: {{ "%.2f"|format(data.varasto.tilavuus) }} | 
+                            Vapaata tilaa: {{ "%.2f"|format(data.varasto.paljonko_mahtuu()) }}
+                        </p>
+                    </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-muted">Ei varastoja. Luo ensimmäinen varasto oikealla olevalla lomakkeella.</p>
+        {% endif %}
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title mb-0">Luo uusi varasto</h3>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('create_varasto') }}">
+                    <div class="mb-3">
+                        <label for="nimi" class="form-label">Varaston nimi</label>
+                        <input type="text" class="form-control" id="nimi" name="nimi" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="tilavuus" class="form-label">Tilavuus</label>
+                        <input type="number" step="0.01" class="form-control" id="tilavuus" name="tilavuus" required min="0">
+                    </div>
+                    <div class="mb-3">
+                        <label for="alku_saldo" class="form-label">Alkusaldo</label>
+                        <input type="number" step="0.01" class="form-control" id="alku_saldo" name="alku_saldo" value="0" min="0">
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Luo varasto</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
